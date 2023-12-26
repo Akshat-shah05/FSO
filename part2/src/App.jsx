@@ -1,25 +1,50 @@
 /* eslint-disable react/prop-types */
 
-const Note = ({ content }) => {
-  return (
-    <li>{content}</li>
-  )
-}
+import { useState } from 'react'
+import Note from './components/Note'
 
-const App = ({ notes }) => {
+const App = (props) => {
+  const [notes, setNotes] = useState(props.notes)
+  const [newNote, setNewNote] = useState('a new note...')
+  const [showAll, setShowAll] = useState(true)
 
+  const notesToShow = showAll ? notes : notes.filter(note => note.important)
+ 
+  const addNote = (event) => {
+    event.preventDefault()
+    const noteObject = {
+      id: notes.length + 1,
+      content: newNote, 
+      important: Math.random() < 0.5
+    }
+
+    setNotes(notes.concat(noteObject))
+    setNewNote('')
+  }
+
+  const noteChange = (event) => {
+    console.log(event.target.value)
+    setNewNote(event.target.value)
+  }
+
+  console.log(newNote)
   return (
     <div>
       <h1>Notes</h1>
       <ul>
-        {notes.map(note => {
-          return (
-            <Note key={note.id} content={note.content}/>
-          )
-        })}
+        {notesToShow.map(note => 
+          <Note key={note.id} note={note} />
+        )}
       </ul>
+      <form onSubmit={addNote}>
+          <input onChange={noteChange} value={newNote}/>
+          <button type="submit">save</button>
+      </form>
+      <button onClick={() => setShowAll(!showAll)}>
+        show {showAll ? "mportant" : "All"}
+      </button>
     </div>
   )
 }
 
-export default App
+export default App 
