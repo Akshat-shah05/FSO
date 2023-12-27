@@ -38,6 +38,7 @@ const App = (props) => {
       </ul>
       <form onSubmit={addNote}>
           <input onChange={noteChange} value={newNote}/>
+          <input onChange={phoneChange} value={newPhone} />
           <button type="submit">save</button>
       </form>
       <button onClick={() => setShowAll(!showAll)}>
