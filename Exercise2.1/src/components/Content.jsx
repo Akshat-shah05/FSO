@@ -4,19 +4,19 @@ import Person from "./Person"
 const Content = ({ persons, filteredPersons, search }) => {
     if (filteredPersons.length === 0 || search.length === 0) {
         return (
-            <ul>
+            <div>
                 {persons.map((person) => {
                 return <Person key={person.name} name={person.name} phone={person.phone}/>
                 })}
-            </ul>
+            </div>
         )
     } else {
         return (
-            <ul>
+            <div>
                 {filteredPersons.map((person) => {
                 return <Person key={person.name} name={person.name} phone={person.phone}/>
                 })}
-            </ul>
+            </div>
         )
     }
     

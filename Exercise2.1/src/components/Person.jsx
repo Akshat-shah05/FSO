@@ -2,7 +2,7 @@
 
 const Person = ({ name, phone }) => {
   return (
-    <p>{name} {phone}</p>
+    <p>{name} ---- {phone}</p>
   )
 }
 
