@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import Note from './components/Note'
 import noteService from './services/notes'
+import Form from './components/Form'
+import axios from 'axios'
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -35,6 +37,20 @@ const App = () => {
 
   }
 
+  const noteDelete = (id) => {
+    if (window.confirm(`Do you want to delete note #${id}`)) {
+      axios
+        .delete(`http://localhost:3001/notes/${id}`)
+        .then(response => {
+          console.log(response)
+          setNotes(notes.map(note => note.id !== id))
+        }).catch(error => {
+          console.log(error)
+          alert("COULDN'T BE DELETED")
+        })
+    }
+  }
+
   const notesToShow = showAll ? notes : notes.filter(note => note.important)
  
   const addNote = (event) => {
@@ -61,13 +77,18 @@ const App = () => {
       <h1>Notes</h1>
       <ul>
         {notesToShow.map(note => 
-          <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)}/>
+          <Note 
+            key={note.id} note={note} 
+            toggleImportance={() => toggleImportanceOf(note.id)}
+            noteDelete={noteDelete}
+          />
         )}
       </ul>
-      <form onSubmit={addNote}>
-          <input onChange={noteChange} value={newNote}/>
-          <button type="submit">save</button>
-      </form>
+      <Form 
+        addNote={addNote}
+        noteChange={noteChange}
+        newNote={newNote}
+      />
       <button onClick={() => setShowAll(!showAll)}>
         show {showAll ? "important" : "All"}
       </button>
